@@ -10,7 +10,8 @@ const startServer = async () => {
     try{
         await connectDB();
 
-        app.listen(5000, ()=>{
+        const port = process.env.PORT || 5000;
+            app.listen(port, ()=>{
             console.log("Server is running...");
         });
     }catch(error){
