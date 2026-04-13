@@ -11,7 +11,7 @@ const initializeSocket = (server) => {
 
     io.on("connection", (socket) => {
         socket.emit("socket:ready", {
-            message: "Websocket conncetion established."
+            message: "Websocket connection established."
         })
     });
 
@@ -19,14 +19,27 @@ const initializeSocket = (server) => {
 }
 
 const emitTaskCreated = (task) => {
-    if(!io){
-        return;
-    }
-
+    if(!io) return;
     io.emit("task:created", {
-        message: "Websocket conncetion established.",
+        message: "Task created.",
         data: { task }
-    })
+    });
 }
 
-module.exports = { initializeSocket, emitTaskCreated };
+const emitTaskUpdated = (task) => {
+    if(!io) return;
+    io.emit("task:updated", {
+        message: "Task updated.",
+        data: { task }
+    });
+}
+
+const emitTaskDeleted = (task) => {
+    if(!io) return;
+    io.emit("task:deleted", {
+        message: "Task deleted.",
+        data: { task }
+    });
+}
+
+module.exports = { initializeSocket, emitTaskCreated, emitTaskUpdated, emitTaskDeleted };
