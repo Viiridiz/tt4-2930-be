@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 export class RealtimeService {
   private socket: Socket | null = null;
 
-  connect(onTaskCreated: () => void):void{
+  connect(onTaskChange: () => void):void{
     if(this.socket?.connected){
       return;
     };
@@ -19,12 +19,15 @@ export class RealtimeService {
       transports: ['websocket'],
     });
 
-    this.socket.on("task:created", onTaskCreated);
-
+    this.socket.on("task:created", onTaskChange);
+    this.socket.on("task:updated", onTaskChange);
+    this.socket.on("task:deleted", onTaskChange);
   }
 
   disconnect(): void {
     this.socket?.disconnect();
     this.socket?.off("task:created");
+    this.socket?.off("task:updated");
+    this.socket?.off("task:deleted");
   }
 }
